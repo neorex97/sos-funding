@@ -52,8 +52,8 @@ function sosupdate(req,res){
       sosamount: req.body.sosamount 
     }, 
       { where: {sosid: req.params.id} }
-           ).then(() => {
-            res.status(200).send(otherfunds);
+           ).then(sosfund => {
+            res.status(200).send(sosfund);
            }).catch(err => {
             res.status(500).send("Error -> " + err);
            })
@@ -99,8 +99,8 @@ function sosupdate(req,res){
       amount: req.body.amount 
     }, 
       { where: {id: req.params.id} }
-           ).then(() => {
-            res.status(200).send(otherfunds);
+           ).then(other => {
+            res.status(200).send(other);
            }).catch(err => {
             res.status(500).send("Error -> " + err);
            })

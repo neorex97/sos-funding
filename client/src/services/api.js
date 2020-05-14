@@ -6,3 +6,4 @@ export default () => {
        
     })
 }
+// Base url is specified in this file 

@@ -24,32 +24,12 @@ export default new Vuex.Store({
   },
   actions: {
     
-    GetSos ({commit}) {
-      const response = ApiServices.getsos()
-      .then(response => {
-        //this.sosfund = response.data; // JSON are parsed automatically.
-        console.log("data arrived")
-        console.log(response.data)
-        let sos = response.data
-        commit('SET_SOSFUNDING',sos)
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    GetSos: (context,sos)=> {
+      context.commit('SET_SOSFUNDING',sos)
       },
 
-      GetOtherFunds ({commit}) {
-        const Data = ApiServices.getotherfunds()
-        .then(Data => {
-          //this.sosfund = response.data; // JSON are parsed automatically.
-          console.log("data arrived")
-          console.log(Data.data)
-          let others = Data.data
-          commit('SET_OTHERFUNDS',others)
-        })
-        .catch(e => {
-          console.log(e);
-        });
+      GetOtherFunds: (context,others)=> {
+        context.commit('SET_OTHERFUNDS',others)
         },
 
     removeItem:(context,index)=>{

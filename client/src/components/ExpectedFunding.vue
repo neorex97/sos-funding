@@ -235,22 +235,46 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
     //   this.initialize()
     // },
 
-    //call actions when component is mounted to get data from server
-   mounted() {
-      this.$store.dispatch('GetSos')
-      this.$store.dispatch('GetOtherFunds')
+//call actions when component is mounted to get data from server
+     mounted: function () {
+    this.Sos()
+    this.getOther()
     },
-    //update after every change
-    // updated() {
-    //   this.$store.dispatch('GetOtherFunds')
-    // },
+
+   
     methods: {
      ...mapActions([
       'removeItem',
       'addNewItem',
       'GetSos',
-      'GetOtherFunds',
+      'GetOtherFunds'
     ]),
+    Sos(){
+      const response = ApiServices.getsos()
+      .then(response => {
+        //this.sosfund = response.data; // JSON are parsed automatically.
+        console.log("data arrived")
+        console.log(response.data)
+        let sos = response.data
+        this.GetSos(sos)
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    },
+    getOther(){
+         const Data = ApiServices.getotherfunds()
+        .then(Data => {
+          //this.sosfund = response.data; // JSON are parsed automatically.
+          console.log("data arrived")
+          console.log(Data.data)
+          let others = Data.data 
+          this.GetOtherFunds(others)  
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
     editsos(item){
       this.newsos = Object.assign({}, item)
       var id = this.newsos.sosid
@@ -277,6 +301,7 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
       },
         close () {
         this.dialog = false
+        this.getOther()
         setTimeout(() => {
           this.newItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -288,10 +313,11 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
         if (this.editedIndex > -1) {
           ApiServices.updateItem(id,this.newItem)
             console.log(this.newitem)
+            //this.$store.dispatch('GetOtherFunds')
           //Object.assign(this.others[this.editedIndex], this.newItem)
         } else {
           const response =ApiServices.addNewcontribution(this.newItem)
-            console.log(response.data)
+          console.log(response.data)
           //this.addNewItem(this.newItem) 
         }
         this.close()
