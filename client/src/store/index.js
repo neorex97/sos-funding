@@ -19,7 +19,7 @@ export default new Vuex.Store({
       state.others.push(newItem)
     },
     REMOVE_ITEM:(state,index)=>{
-      confirm('Are you sure you want to delete this item?') && state.others.splice(index, 1)
+      state.others.splice(index, 1)
     },
   },
   actions: {

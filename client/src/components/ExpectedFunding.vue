@@ -29,8 +29,7 @@
        <v-tooltip bottom>
       <template v-slot:activator="{ on }">
       <td v-on="on">
-          <!-- Textfied on dialog for editing Sos contribution -->
-
+<!-- Textfied on dialog for editing sosamount -->
        <v-edit-dialog
           :return-value.sync="props.item.sosamount"
         > {{ props.item.sosamount }} {{sosPercentage}}
@@ -91,7 +90,7 @@
       </v-icon>
       <v-icon
         small
-        @click="deleteItem(props.item.id)"
+        @click="deleteItem(props.item.id,props.item)"
       >
         mdi-delete
       </v-icon>
@@ -289,36 +288,38 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
         this.dialog = true
       },
       //call delete api
-        deleteItem (Id) {
+        deleteItem (Id,item) {
         var id = Id
+        var index = this.others.indexOf(item)
         //const id = this.item.id
         var r = confirm('Are you sure you want to delete this item?')
         if(r==true){
+          console.log(id)
            ApiServices.deleteItem(id)
-           console.log(id)
+           this.removeItem(index)
         }
-        //this.removeItem(index)
+        
       },
         close () {
         this.dialog = false
-        this.getOther()
         setTimeout(() => {
           this.newItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         }, 300)
+        //this.getOther()
       },
         save () {
           var id = this.newItem.id
           console.log(id)
         if (this.editedIndex > -1) {
+          Object.assign(this.others[this.editedIndex], this.newItem)
           ApiServices.updateItem(id,this.newItem)
-            console.log(this.newitem)
-            //this.$store.dispatch('GetOtherFunds')
-          //Object.assign(this.others[this.editedIndex], this.newItem)
+          
+          console.log(this.newitem)
         } else {
           const response =ApiServices.addNewcontribution(this.newItem)
-          console.log(response.data)
-          //this.addNewItem(this.newItem) 
+          console.log(JSON.stringify(response.data))  
+          //this.addNewItem(response.data) 
         }
         this.close()
       },

@@ -1,25 +1,27 @@
+
 import Api from '@/services/api'
 export default {
-  //get data from sosfunds table
+  //api service to get data from sosfunds table
     getsos () {
       return Api().get('sourcefunding')  
     },
-    //get data from otherfunds table
+    //api service get data from otherfunds table
     getotherfunds () {
       return Api().get('sourcefunding/others')
     },
-    // post new data to server for creating new row
+    // api service to create a new row
     addNewcontribution (data){
       return Api().post('sourcefunding',data)
     },
-    //post id of selected item to be deleted
+    //api service to delete item using its 'id' in otherfunds table
     deleteItem (id){
       return Api().delete('sourcefunding/delete' +id)
     },
-    // post id and edited data of selected item
+    //api service to update an item in otherfunds table 
     updateItem (id,item){
       return Api().put('sourcefunding/update' +id ,item)
     },
+    // api service to update sosamount in sosfund table
     updateSos(id,item){
       return Api().put('sourcefunding/sos' +id ,item)
     }

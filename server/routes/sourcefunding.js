@@ -11,6 +11,7 @@ router.post('/',newContribution);
 router.delete('/delete:id',dataDelete);
 router.put('/update:id',dataUpdate);
 router.put('/sos:id',sosupdate)
+//router.post('/sos',newsos);
 
 // Send all sosfunds to ClientSide
 function GetSos(req, res) {
@@ -22,7 +23,7 @@ function GetSos(req, res) {
   })
 }
 // Send all other contributions to ClientSide
-function GetOtherContributions(req,res){
+function GetOtherContributions(req,res,next){
   otherfunds.findAll()
   .then(otherfunds =>{
     res.send(otherfunds);
@@ -30,6 +31,18 @@ function GetOtherContributions(req,res){
     res.status(500).send("Error -> " + err);
   })
 }
+
+// function newsos(req,res){
+//   const Data = JSON.parse(JSON.stringify(req.body))
+//   sosfund.create({
+//     sosamount: req.body.sosamount
+//   }).then(sosfund => {    
+//     // Send created sosfund to ClientSide
+//     res.send(sosfund);
+//   }).catch(err => {
+//     res.status(500).send("Error -> " + err);
+//   })
+// }
 
 // sos update
 
@@ -68,10 +81,13 @@ function sosupdate(req,res){
       description : Data.description,
       amount: Data.amount,
 
-    }).then(otherfund => {    
-      // Send created sosfund to ClientSide
+    })
+    .then(otherfund => {    
+      // Send created otherfund to ClientSide
       res.send(otherfund);
-    }).catch(err => {
+      //return res.redirect('sourcefunding/others');
+    })
+    .catch(err => {
       res.status(500).send("Error -> " + err);
     })
   }
