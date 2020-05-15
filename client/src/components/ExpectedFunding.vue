@@ -148,6 +148,7 @@
   
 
   </v-data-table>
+  
   </v-card>
 </template>
 
@@ -315,9 +316,15 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
           
           console.log(this.newitem)
         } else {
-          const response =ApiServices.addNewcontribution(this.newItem)
-         //console.log(response.dataValues)  
-        this.addNewItem(this.newItem) 
+          const Data =ApiServices.addNewcontribution(this.newItem)
+          .then(Data => {
+          console.log("value")
+          console.log(Data.data)
+          this.addNewItem(Data.data) 
+        })
+        .catch(e => {
+          console.log(e);
+        });
         }
         this.close()
       },
