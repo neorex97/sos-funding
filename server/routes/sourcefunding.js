@@ -17,7 +17,18 @@ router.put('/sos:id',sosupdate)
 function GetSos(req, res) {
   sosfund.findAll()
   .then(sosfunds => { 
-    res.send(sosfunds);
+    if(sosfunds.length===0){
+      sosfund.create({
+        sosamount: '0'
+      }).then(sosfund => {    
+        // Send created sosfund to ClientSide
+        res.send(sosfund);
+      }).catch(err => {
+        res.status(500).send("Error -> " + err);
+      })
+    }
+    else{res.send(sosfunds);}
+    
   }).catch(err => {
     res.status(500).send("Error -> " + err);
   })
@@ -49,8 +60,8 @@ function GetOtherContributions(req,res,next){
 function sosupdate(req,res){
   var Data = req.body;
   const id = req.params.id;
-  const sos = sosfund.findOne({ where: { sosid: id } });
-  if (sos === null) {
+  const sos = sosfund.findAll();
+  if (sos.length===0) {
     sosfund.create({
             sosamount: sos.sosamount
           }).then(sosfund => {    
