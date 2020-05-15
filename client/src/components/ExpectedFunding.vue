@@ -316,7 +316,7 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
           
           console.log(this.newitem)
         } else {
-          const Data =ApiServices.addNewcontribution(this.newItem)
+          ApiServices.addNewcontribution(this.newItem)
           .then(Data => {
           console.log("value")
           console.log(Data.data)
