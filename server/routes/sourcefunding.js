@@ -84,7 +84,8 @@ function sosupdate(req,res){
     })
     .then(otherfund => {    
       // Send created otherfund to ClientSide
-      res.send(otherfund);
+      console.log(otherfund.dataValues)
+      res.send(otherfund.dataValues);
       //return res.redirect('sourcefunding/others');
     })
     .catch(err => {

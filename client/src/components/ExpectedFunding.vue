@@ -318,8 +318,8 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
           console.log(this.newitem)
         } else {
           const response =ApiServices.addNewcontribution(this.newItem)
-          console.log(JSON.stringify(response.data))  
-          //this.addNewItem(response.data) 
+         //console.log(response.dataValues)  
+        this.addNewItem(this.newItem) 
         }
         this.close()
       },
