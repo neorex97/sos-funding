@@ -26,9 +26,8 @@
     <tr>
           <!-- Tooltip message on sos -->
 
-       <v-tooltip bottom>
-      <template v-slot:activator="{ on }">
-      <td v-on="on">
+       
+      <td>
 <!-- Textfied on dialog for editing sosamount -->
        <v-edit-dialog
           :return-value.sync="props.item.sosamount"
@@ -36,6 +35,7 @@
           <template v-slot:input >
             <v-form @submit="editsos(props.item)">
             <v-text-field
+              
               v-model="props.item.sosamount"
               :rules="[max25chars]"
               label="sos contribution"
@@ -46,9 +46,7 @@
           </template>
         </v-edit-dialog>
         </td>
-        </template>
-      <span>Sos contribution</span>
-    </v-tooltip>
+     
 
   <!-- INNER TABLE  -->
 
@@ -113,7 +111,7 @@
             <v-card-title>
               <span class="headline">{{ formTitle }}</span>
             </v-card-title>
-
+  
             <v-card-text>
               <v-container>
                 <v-row>

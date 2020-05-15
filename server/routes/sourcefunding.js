@@ -60,17 +60,7 @@ function GetOtherContributions(req,res,next){
 function sosupdate(req,res){
   var Data = req.body;
   const id = req.params.id;
-  const sos = sosfund.findAll();
-  if (sos.length===0) {
-    sosfund.create({
-            sosamount: sos.sosamount
-          }).then(sosfund => {    
-            // Send created sosfund to ClientSide
-            res.send(sosfund);
-          }).catch(err => {
-            res.status(500).send("Error -> " + err);
-          })
-  } else {
+
     sosfund.update( 
     { 
       sosamount: req.body.sosamount 
@@ -81,7 +71,7 @@ function sosupdate(req,res){
            }).catch(err => {
             res.status(500).send("Error -> " + err);
            })
-    }
+    
 }
 
 // add new other contribution
