@@ -1,5 +1,5 @@
 Vue.js Client & Node.js/express Server which uses Sequelize ORM to do CRUD operations on MySQL Database 
-# Required Vue.js+Node.js+Sequelize+MySQL
+Required : Vue.js + Node.js + Sequelize + MySQL
 
 
 # cd sos-funding/server
