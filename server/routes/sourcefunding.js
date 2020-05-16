@@ -11,7 +11,6 @@ router.post('/',newContribution);
 router.delete('/delete:id',dataDelete);
 router.put('/update:id',dataUpdate);
 router.put('/sos:id',sosupdate)
-//router.post('/sos',newsos);
 
 // Send all sosfunds to ClientSide
 function GetSos(req, res) {
@@ -28,11 +27,11 @@ function GetSos(req, res) {
       })
     }
     else{res.send(sosfunds);}
-    
-  }).catch(err => {
+    }).catch(err => {
     res.status(500).send("Error -> " + err);
-  })
+    })
 }
+
 // Send all other contributions to ClientSide
 function GetOtherContributions(req,res,next){
   otherfunds.findAll()
@@ -43,35 +42,16 @@ function GetOtherContributions(req,res,next){
   })
 }
 
-// function newsos(req,res){
-//   const Data = JSON.parse(JSON.stringify(req.body))
-//   sosfund.create({
-//     sosamount: req.body.sosamount
-//   }).then(sosfund => {    
-//     // Send created sosfund to ClientSide
-//     res.send(sosfund);
-//   }).catch(err => {
-//     res.status(500).send("Error -> " + err);
-//   })
-// }
 
 // sos update
-
 function sosupdate(req,res){
-  var Data = req.body;
-  const id = req.params.id;
-
-    sosfund.update( 
-    { 
-      sosamount: req.body.sosamount 
-    }, 
-      { where: {sosid: req.params.id} }
-           ).then(sosfund => {
+    sosfund.update({sosamount: req.body.sosamount}, 
+    {where:{sosid: req.params.id}})
+    .then(sosfund => {
             res.status(200).send(sosfund);
            }).catch(err => {
             res.status(500).send("Error -> " + err);
            })
-    
 }
 
 // add new other contribution
@@ -81,24 +61,18 @@ function sosupdate(req,res){
       name : Data.name,
       description : Data.description,
       amount: Data.amount,
-
-    })
-    .then(otherfund => {    
-      // Send created otherfund to ClientSide
-      console.log(otherfund.dataValues)
+    }).then(otherfund => {    
+      //Send back created data as response
       res.send(otherfund.dataValues);
-      //return res.redirect('sourcefunding/others');
-    })
-    .catch(err => {
+    }).catch(err => {
       res.status(500).send("Error -> " + err);
     })
   }
 
   // delete a contribution
   function dataDelete(req,res){
-    const id = req.params.id;
     otherfunds.destroy({
-    where: { id: id }
+    where: { id: req.params.id }
   }).then(() => {
     res.status(200).send('Contribution deleted!');
   }).catch(err => {
@@ -108,21 +82,18 @@ function sosupdate(req,res){
 
   // update selected contribution
   function dataUpdate(req,res){
-    var Data = req.body;
-  const id = req.params.id;
   otherfunds.update( 
     { 
       name: req.body.name,
       description: req.body.description,
       amount: req.body.amount 
-    }, 
-      { where: {id: req.params.id} }
+    },{where:{id: req.params.id}}
            ).then(other => {
             res.status(200).send(other);
            }).catch(err => {
             res.status(500).send("Error -> " + err);
            })
-  }
+    }
 
 
 

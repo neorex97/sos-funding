@@ -219,7 +219,7 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
   
   ]),
       formTitle () {
-        return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+        return this.editedIndex === -1 ? 'Add new' : 'Edit Item'
       },
       
     },
@@ -228,101 +228,81 @@ import {mapState,mapGetters,mapMutations,mapActions} from 'vuex'
         val || this.close()
       },
     },
-
-    // created () {
-    //   this.initialize()
-    // },
-
-//call actions when component is mounted to get data from server
-     mounted: function () {
+//invoke methods to get data from server when component is mounted
+    mounted: function () {
     this.Sos()
-    this.getOther()
+    this.Others()
     },
-
-   
-    methods: {
+  methods: {
      ...mapActions([
-      'removeItem',
-      'addNewItem',
-      'GetSos',
-      'GetOtherFunds'
+      'removeItemAction',
+      'addItemAction',
+      'getSosAction',
+      'getOtherAction'
     ]),
+  //GET DATA FROM SERVER
     Sos(){
-      const response = ApiServices.getsos()
+      ApiServices.getsosfunds()
       .then(response => {
-        //this.sosfund = response.data; // JSON are parsed automatically.
-        console.log("data arrived")
         console.log(response.data)
-        let sos = response.data
-        this.GetSos(sos)
-      })
-      .catch(e => {
+        this.getSosAction(response.data)
+      }).catch(e => {
         console.log(e);
-      });
+        });
     },
-    getOther(){
-         const Data = ApiServices.getotherfunds()
-        .then(Data => {
-          //this.sosfund = response.data; // JSON are parsed automatically.
-          console.log("data arrived")
-          console.log(Data.data)
-          let others = Data.data 
-          this.GetOtherFunds(others)  
-        })
-        .catch(e => {
+    Others(){
+     ApiServices.getotherfunds()
+      .then(response => {
+        console.log(response.data)
+        this.getOtherAction(response.data)  
+      }).catch(e => {
           console.log(e);
         });
     },
+    //Update sosamount
     editsos(item){
-      this.newsos = Object.assign({}, item)
-      var id = this.newsos.sosid
-      console.log(id)
-      ApiServices.updateSos(id,this.newsos)
-      this.newsos = Object.assign({}, this.defaultsos)   
+        this.newsos = Object.assign({}, item)
+        var id = this.newsos.sosid
+        console.log(id)
+        ApiServices.updateSos(id,this.newsos)
+        this.newsos = Object.assign({}, this.defaultsos)   
     },
-    //store new data for adding new row  or editing one
+    //store edit data to newItem and set editIndex to determine which action to perform edit/create
      editItem (item) {
         this.editedIndex = this.others.indexOf(item)
         this.newItem = Object.assign({}, item)
         this.dialog = true
       },
-      //call delete api
-        deleteItem (Id,item) {
-        var id = Id
+    // Delete selected row using its id 
+    deleteItem (id,item) {
         var index = this.others.indexOf(item)
-        //const id = this.item.id
         var r = confirm('Are you sure you want to delete this item?')
         if(r==true){
           console.log(id)
            ApiServices.deleteItem(id)
-           this.removeItem(index)
-        }
-        
+           this.removeItemAction(index)
+        }  
       },
-        close () {
+    close () {
         this.dialog = false
         setTimeout(() => {
           this.newItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         }, 300)
-        //this.getOther()
       },
-        save () {
+    save () {
           var id = this.newItem.id
           console.log(id)
         if (this.editedIndex > -1) {
           Object.assign(this.others[this.editedIndex], this.newItem)
           ApiServices.updateItem(id,this.newItem)
-          
-          console.log(this.newitem)
-        } else {
+        } 
+        else {
           ApiServices.addNewcontribution(this.newItem)
-          .then(Data => {
-          console.log("value")
-          console.log(Data.data)
-          this.addNewItem(Data.data) 
-        })
-        .catch(e => {
+          .then(response => {
+          console.log(response.data)
+          this.addItemAction(response.data) 
+        }).catch(e => {
           console.log(e);
         });
         }

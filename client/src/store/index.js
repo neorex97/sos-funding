@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import ApiServices from '@/services/ApiServices'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -24,19 +23,16 @@ export default new Vuex.Store({
   },
   actions: {
     
-    GetSos: (context,sos)=> {
+    getSosAction: (context,sos)=> {
       context.commit('SET_SOSFUNDING',sos)
-      },
-
-      GetOtherFunds: (context,others)=> {
+    },
+    getOtherAction: (context,others)=> {
         context.commit('SET_OTHERFUNDS',others)
-        },
-
-    removeItem:(context,index)=>{
-      
+    },
+    removeItemAction:(context,index)=>{   
       context.commit('REMOVE_ITEM',index)
     },
-    addNewItem:(context,newItem)=>{
+    addItemAction:(context,newItem)=>{
       context.commit('ADD_NEW',newItem)
     }
   },
@@ -44,7 +40,7 @@ export default new Vuex.Store({
   modules: {
   },
   getters:{
-//Calculate subtotal
+//Calculate subtotal by adding each otherfunds amounts
     countSubtotal:(state)=>{
       var subtotal=0,i;
       if(state.others.length==0 && state.sosfunding[0].sosamount==''){
@@ -54,10 +50,9 @@ export default new Vuex.Store({
           subtotal += parseInt(state.others[i].amount);
       }
       return isNaN(subtotal) ? '' : subtotal;
-      }
-      
+      }    
 },
-// Calculate total contributions
+// Calculate total contributions by adding subtotal and sosamount
     countTotal:(state)=>{
       var total=parseInt(state.sosfunding[0].sosamount),
       i;
@@ -66,7 +61,7 @@ export default new Vuex.Store({
       }
       return  isNaN(total) ? '' : total;
     },
-// calculate total percentage of sos contribution
+// calculate percentage of sosamount 
     sosPercentage:(state)=>{
       var total=parseInt(state.sosfunding[0].sosamount),
       i;
@@ -76,7 +71,7 @@ export default new Vuex.Store({
       const sosPercent = parseFloat((parseInt(state.sosfunding[0].sosamount)*100)/total).toFixed(2); 
       return isNaN(sosPercent) ? '' : '['+sosPercent+'%]';
     },
-// Percentage of other contributions
+// Calculate percentage of subtotal of other contributions
     subPercent:(state)=>{
       var total=parseInt(state.sosfunding[0].sosamount),
       i;
@@ -86,7 +81,6 @@ export default new Vuex.Store({
       const percentage=parseFloat(100-(parseInt(state.sosfunding[0].sosamount)*100)/total).toFixed(2); 
       return isNaN(percentage) ? '' : '['+percentage+'%]';
     },
-  
     },
   
 })
