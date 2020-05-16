@@ -21,7 +21,7 @@ function GetSos(req, res) {
         sosamount: '0'
       }).then(sosfund => {    
         // Send created sosfund to ClientSide
-        res.send(sosfund);
+        res.redirect('/sourcefunding')
       }).catch(err => {
         res.status(500).send("Error -> " + err);
       })
