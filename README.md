@@ -1,9 +1,11 @@
-To start server
-
 # cd sos-funding/server
+
+initialize database
+# npx sequelize-cli db:migrate
+
+start node server
 # npm start
 
-To run client
-
+run vue application(client)
 # cd sos-funding/client
 # npm run serve
